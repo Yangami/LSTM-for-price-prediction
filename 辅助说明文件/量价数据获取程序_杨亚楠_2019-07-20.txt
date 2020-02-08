@@ -1,0 +1,13 @@
+from jqdata import jy
+from jqdata import *
+#获取数据时需修改start、end、pool为获取数据去开始日期，结束日期和需要的股票列表
+start,end='2005-01-01','2019-01-01'
+pool=['000002.XSHG']
+pl=get_price(pool,start,end)
+for i in pool:
+    df=pl.ix[:,:,i]
+    close=list(df['close'])
+    close_1=close[1:]
+    r=(np.array(close_1)-np.array(close[:-1]))/np.array(close[:-1])
+    df.insert(0,'r',list(r)+[np.nan])
+    df.to_csv(i+'.csv')
